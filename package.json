@@ -1,0 +1,39 @@
+{
+  "name": "togglo",
+  "version": "0.0.0",
+  "description": "Experimental PWA that updates friends and family with a tap of a button.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stwupton/togglo.git"
+  },
+  "author": "Steven Upton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stwupton/togglo/issues"
+  },
+  "homepage": "https://github.com/stwupton/togglo#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "fibers": "^3.1.1",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "sass": "^1.17.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
