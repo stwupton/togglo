@@ -16,7 +16,21 @@
     "url": "https://github.com/stwupton/togglo/issues"
   },
   "homepage": "https://github.com/stwupton/togglo#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-brands-svg-icons": "^5.8.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "babel-polyfill": "^6.26.0",
+    "firebase": "^5.11.1",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
@@ -25,10 +39,6 @@
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.1",
     "fibers": "^3.1.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-redux": "^6.0.1",
-    "redux": "^4.0.1",
     "sass": "^1.17.3",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",

@@ -1,39 +1,53 @@
+import LoginScreen from './login_screen';
+import CSSBaseline from '@material-ui/core/CssBaseline';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import { connect } from 'react-redux';
-
-import '../styles/app.scss'
-
-class TestB extends React.Component {
-  render() {
-    console.log('B rendered');
-    return (<div></div>);
-  }
-}
-
-class TestA extends React.Component {
-  render() {
-    console.log('A rendered');
-    return (<TestB></TestB>);
-  }
-}
+import TopBar from './top_bar';
 
 class App extends React.Component {
+  get loginOrDashboard() {
+    if (this.props.user.loggedIn) {
+      return <TopBar />;
+    } else {
+      return <LoginScreen />;
+    }
+  }
+
+  get muiTheme() {
+    return createMuiTheme({
+      palette: {
+        type: this.props.settings.themeType,
+        primary: { 
+          main: '#bdbdbd',
+          light: '#efefef',
+          dark: '#8d8d8d'
+        },
+        secondary: { 
+          main: '#546e7a',
+          light: '#819ca8',
+          dark: '#29434e'
+        }
+      },
+      typography: {
+        useNextVariants: true
+      }
+    });
+  }
+
   render() {
-    console.log('App rendered', this.props);
     return (
-      <div className="App">
-        <h1>{this.props.count}</h1>
-        <button onClick={() => {
-          this.props.increment();
-        }}>Test</button>
-        <TestA></TestA>
-      </div>
+      <MuiThemeProvider theme={this.muiTheme}>
+        <CSSBaseline />
+        <div className="App">
+          {this.loginOrDashboard}
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
 
 export default connect((state) => ({
-  count: state.count
-}), (dispatch) => ({
-  increment: () => dispatch({type: 'increment'})
-}))(App);
+  settings: state.settings,
+  user: state.user
+}), {})(App);
