@@ -9,6 +9,7 @@ const loginMethods = {
 export const UserActionType = {
   LOGGING_IN: 'logging_in',
   LOGGED_IN: 'logged_in',
+  LOGGED_OUT: 'logged_out',
 };
 
 async function googleLogin() { 
@@ -33,4 +34,9 @@ export function login(service) {
       payload: loginMethods[service]() 
     });
   }
+}
+
+export async function logout() {
+  await firebase.auth().signOut();
+  return { type: UserActionType.LOGGED_OUT };
 }

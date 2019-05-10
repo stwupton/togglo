@@ -48,7 +48,7 @@ async function getDefaultState() {
       themeType: ThemeType.LIGHT,
     }
   };
-};
+}
 
 export async function initStore() {
   return createStore(
