@@ -5,6 +5,7 @@ import promiseMiddleware from 'redux-promise';
 import thunk from 'redux-thunk';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { snackbars } from './reducers/snackbar';
 
 const middleware = applyMiddleware(thunk, promiseMiddleware);
 
@@ -12,6 +13,7 @@ function reduce(state, action) {
   return {
     ...state,
     user: user(state.user, action),
+    snackbars: snackbars(state.snackbars, action),
     settings: settings(state.settings, action),
   };
 }
@@ -44,6 +46,7 @@ function getDefaultUserState() {
 async function getDefaultState() {
   return {
     user: await getDefaultUserState(),
+    snackbars: [],
     settings: {
       themeType: ThemeType.LIGHT,
     }

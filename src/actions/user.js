@@ -2,8 +2,9 @@ import { LoginService } from '../names';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-const loginMethods = {
-  [LoginService.GOOGLE]: googleLogin
+const authProviders = {
+  [LoginService.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
+  [LoginService.FACEBOOK]: new firebase.auth.FacebookAuthProvider()
 };
 
 export const UserActionType = {
@@ -12,8 +13,8 @@ export const UserActionType = {
   LOGGED_OUT: 'logged_out',
 };
 
-async function googleLogin() { 
-  const provider = new firebase.auth.GoogleAuthProvider();
+async function loginWithService(service) { 
+  const provider = authProviders[service];
   const result = await firebase.auth().signInWithPopup(provider);
   return {
     name: result.user.displayName,
@@ -23,7 +24,7 @@ async function googleLogin() {
 }
 
 export function login(service) {
-  if (service == null || loginMethods[service] == null) {
+  if (service == null || authProviders[service] == null) {
     throw 'Login service not specified or not recognised.';
   }
 
@@ -31,7 +32,7 @@ export function login(service) {
     dispatch({ type: UserActionType.LOGGING_IN });
     dispatch({ 
       type: UserActionType.LOGGED_IN, 
-      payload: loginMethods[service]() 
+      payload: loginWithService(service) 
     });
   }
 }

@@ -4,6 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import { connect } from 'react-redux';
 import TopBar from './top_bar';
+import SnackbarManager from './snackbar_manager';
 
 class App extends React.Component {
   get loginOrDashboard() {
@@ -41,6 +42,7 @@ class App extends React.Component {
         <CSSBaseline />
         <div className="App">
           {this.loginOrDashboard}
+          <SnackbarManager />
         </div>
       </MuiThemeProvider>
     );
