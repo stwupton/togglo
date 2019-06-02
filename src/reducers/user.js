@@ -5,6 +5,7 @@ export function user(state, action) {
     ...state,
     ...loggedIn(state, action),
     ...loggedOut(state, action),
+    ...updateInfo(state, action),
     loggingIn: loggingIn(state.loggingIn, action)
   };
 }
@@ -46,6 +47,15 @@ function loggedOut(state, action) {
       name: null,
       email: null,
       photoUrl: null,
+    };
+  }
+}
+
+function updateInfo(state, action) {
+  if (action.type === UserActionType.UPDATE_INFO) {console.log('updates info', action);
+    return {
+      loggedIn: true,
+      ...action.payload
     };
   }
 }

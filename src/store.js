@@ -3,60 +3,56 @@ import { settings, user } from './reducers';
 import { applyMiddleware, createStore } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import thunk from 'redux-thunk';
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import { snackbars } from './reducers/snackbar';
+import { get, set, Store } from 'idb-keyval';
 
 const middleware = applyMiddleware(thunk, promiseMiddleware);
+const backupStore = new Store('togglo', 'backup');
 
 function reduce(state, action) {
   return {
     ...state,
     user: user(state.user, action),
-    snackbars: snackbars(state.snackbars, action),
     settings: settings(state.settings, action),
+    snackbars: snackbars(state.snackbars, action),
   };
 }
 
-function getDefaultUserState() {
-  return new Promise(resolve => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      unsubscribe();
-      if (user) {
-        resolve({
-          loggedIn: true,
-          loggingIn: false,
-          name: user.displayName,
-          email: user.email,
-          photoUrl: user.photoURL,
-        });
-      } else {
-        resolve({
-          loggedIn: false,
-          loggingIn: false,
-          name: null,
-          email: null,
-          photoUrl: null,
-        });
-      }
-    });
-  });
+async function getDefaultUserState() {
+  const user = await get('user', backupStore);
+  return {
+    loggedIn: user && user.loggedIn || false,
+    loggingIn: false,
+    name: user && user.name,
+    email: user && user.email,
+    photoUrl: user && user.photoUrl,
+  };
+}
+
+async function getDefaultSettings() {
+  const settings = await get('settings', backupStore);
+  return {
+    themeType: settings && settings.themeType || ThemeType.LIGHT
+  };
 }
 
 async function getDefaultState() {
   return {
     user: await getDefaultUserState(),
+    settings: await getDefaultSettings(),
     snackbars: [],
-    settings: {
-      themeType: ThemeType.LIGHT,
-    }
   };
 }
 
+function onStoreUpdate(state) {
+  set('user', state.user, backupStore);
+  set('settings', state.settings, backupStore);
+}
+
 export async function initStore() {
-  return createStore(
-    reduce, 
-    await getDefaultState(),
-    middleware
-  );
+  const defaultState = await getDefaultState();
+  const store = createStore(reduce, defaultState, middleware);
+  store.subscribe(() => onStoreUpdate(store.getState()));
+  return store;
 }

@@ -5,11 +5,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TopBar from './top_bar';
 import SnackbarManager from './snackbar_manager';
+import UserInfoService from './services/user_info_service'
 
 class App extends React.Component {
   get loginOrDashboard() {
     if (this.props.user.loggedIn) {
-      return <TopBar />;
+      return (
+        <React.Fragment>
+          <UserInfoService />
+          <TopBar />
+        </React.Fragment>
+      );
     } else {
       return <LoginScreen />;
     }

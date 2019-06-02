@@ -1,6 +1,7 @@
 import { LoginService } from '../names';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 const authProviders = {
   [LoginService.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
@@ -11,6 +12,7 @@ export const UserActionType = {
   LOGGING_IN: 'logging_in',
   LOGGED_IN: 'logged_in',
   LOGGED_OUT: 'logged_out',
+  UPDATE_INFO: 'update_info',
 };
 
 async function loginWithService(service) { 
@@ -40,4 +42,15 @@ export function login(service) {
 export async function logout() {
   await firebase.auth().signOut();
   return { type: UserActionType.LOGGED_OUT };
+}
+
+export function updateInfo(firebaseUser) {
+  return {
+    type: UserActionType.UPDATE_INFO,
+    payload: {
+      name: firebaseUser.displayName,
+      email: firebaseUser.email,
+      photoUrl: firebaseUser.photoURL
+    }
+  };
 }
