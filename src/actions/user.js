@@ -1,47 +1,46 @@
-import { LoginService } from '../names';
+import { AuthService } from '../names';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import 'firebase/firestore';
 
 const authProviders = {
-  [LoginService.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
-  [LoginService.FACEBOOK]: new firebase.auth.FacebookAuthProvider()
+  [AuthService.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
+  [AuthService.FACEBOOK]: new firebase.auth.FacebookAuthProvider()
 };
 
 export const UserActionType = {
-  LOGGING_IN: 'logging_in',
-  LOGGED_IN: 'logged_in',
-  LOGGED_OUT: 'logged_out',
+  SIGNING_IN: 'signing_in',
+  SIGNED_IN: 'signed_in',
+  SIGNED_OUT: 'signed_out',
   UPDATE_INFO: 'update_info',
 };
 
-async function loginWithService(service) { 
+async function signInWithService(service) { 
   const provider = authProviders[service];
   const result = await firebase.auth().signInWithPopup(provider);
   return {
     name: result.user.displayName,
     email: result.user.email,
-    photoUrl: result.user.photoURL
+    photoUrl: result.user.photoURL,
   };
 }
 
-export function login(service) {
+export function signIn(service) {
   if (service == null || authProviders[service] == null) {
     throw 'Login service not specified or not recognised.';
   }
 
   return dispatch => {
-    dispatch({ type: UserActionType.LOGGING_IN });
+    dispatch({ type: UserActionType.SIGNING_IN });
     dispatch({ 
-      type: UserActionType.LOGGED_IN, 
-      payload: loginWithService(service) 
+      type: UserActionType.SIGNED_IN, 
+      payload: signInWithService(service) 
     });
   }
 }
 
-export async function logout() {
+export async function signOut() {
   await firebase.auth().signOut();
-  return { type: UserActionType.LOGGED_OUT };
+  return { type: UserActionType.SIGNED_OUT };
 }
 
 export function updateInfo(firebaseUser) {
@@ -50,7 +49,7 @@ export function updateInfo(firebaseUser) {
     payload: {
       name: firebaseUser.displayName,
       email: firebaseUser.email,
-      photoUrl: firebaseUser.photoURL
+      photoUrl: firebaseUser.photoURL,
     }
   };
 }

@@ -1,4 +1,4 @@
-export const LoginService = {
+export const AuthService = {
   FACEBOOK: 'facebook',
   GOOGLE: 'google',
 };

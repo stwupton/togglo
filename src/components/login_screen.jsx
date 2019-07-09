@@ -1,10 +1,10 @@
-import { login } from '../actions/user';
+import { signIn } from '../actions/user';
 import { Grid, Typography, Button } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';  
-import { LoginService } from '../names';
+import { AuthService } from '../names';
 
 class LoginScreen extends React.Component {
   render() { 
@@ -17,11 +17,11 @@ class LoginScreen extends React.Component {
               style={{ backgroundColor: '#4285F4', color: 'white' }} 
               variant="contained" 
               disabled={this.props.user.loggingIn}
-              onClick={() => this.props.login(LoginService.GOOGLE)}
+              onClick={() => this.props.signIn(AuthService.GOOGLE)}
             >
               <div>
                 <FontAwesomeIcon style={{ margin: '0 10px 0 0' }} icon={faGoogle} /> 
-                login with google
+                sign in with google
               </div>
             </Button>
           </Grid>
@@ -30,11 +30,11 @@ class LoginScreen extends React.Component {
               style={{ backgroundColor: '#4267B2', color: 'white' }} 
               variant="contained"
               disabled={this.props.user.loggingIn}
-              onClick={() => this.props.login(LoginService.FACEBOOK)}
+              onClick={() => this.props.signIn(AuthService.FACEBOOK)}
             >
               <div>
                 <FontAwesomeIcon style={{ margin: '0 10px 0 0' }} icon={faFacebook} /> 
-                login with facebook
+                sign in with facebook
               </div>
             </Button>
           </Grid>
@@ -46,4 +46,4 @@ class LoginScreen extends React.Component {
 
 export default connect((state) => ({
   user: state.user
-}), { login })(LoginScreen);
+}), { signIn })(LoginScreen);

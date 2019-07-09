@@ -16,7 +16,7 @@ export function snackbars(state, action) {
   let newState = [...state];
   close(newState, action);
   clear(newState, action);
-  existingEmailLoginError(newState, action);
+  loginErrors(newState, action);
   return newState;
 }
 
@@ -37,19 +37,28 @@ function close(state, action) {
   }
 }
 
-function existingEmailLoginError(state, action) {
-  if (
-    action.type === UserActionType.LOGGED_IN && 
-    action.error && 
-    action.payload.code === 'auth/account-exists-with-different-credential'
-  ) {
+function loginErrors(state, action) {
+  if (action.type === UserActionType.SIGNED_IN && action.error) {
     close(state, { type: SnackbarActionType.CLOSE });
 
-    state.push({
-      ...baseSnackbar(),
-      type: SnackbarMessageType.ERROR,
-      message: 'An account with that email already exists.'
-    });
+    let snackbarData = {};
+    switch (action.payload.code) {
+      case 'auth/account-exists-with-different-credential':
+        snackbarData = {
+          type: SnackbarMessageType.ERROR,
+          message: 'An account with that email already exists.'
+        };
+        break;
+      case 'auth/popup-closed-by-user':
+        return;
+      default:
+        snackbarData = {
+          type: SnackbarMessageType.ERROR,
+          message: 'Could not sign into account.'
+        };
+    }
+
+    state.push({ ...baseSnackbar(), ...snackbarData });
   }
 }
 

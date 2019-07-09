@@ -1,21 +1,15 @@
 import LoginScreen from './login_screen';
+import Dashboard from './dashboard';
 import CSSBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import { connect } from 'react-redux';
-import TopBar from './top_bar';
 import SnackbarManager from './snackbar_manager';
-import UserInfoService from './services/user_info_service'
 
 class App extends React.Component {
   get loginOrDashboard() {
     if (this.props.user.loggedIn) {
-      return (
-        <React.Fragment>
-          <UserInfoService />
-          <TopBar />
-        </React.Fragment>
-      );
+      return <Dashboard />;
     } else {
       return <LoginScreen />;
     }

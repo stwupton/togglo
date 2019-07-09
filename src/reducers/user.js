@@ -12,10 +12,10 @@ export function user(state, action) {
 
 function loggingIn(state, action) {
   switch (action.type) {
-    case UserActionType.LOGGING_IN:
+    case UserActionType.SIGNING_IN:
       return true;
-    case UserActionType.LOGGED_IN:
-    case UserActionType.LOGGED_OUT:
+    case UserActionType.SIGNED_IN:
+    case UserActionType.SIGNED_OUT:
       return false;
     default:
       return state;
@@ -23,7 +23,7 @@ function loggingIn(state, action) {
 }
 
 function loggedIn(state, action) {
-  if (action.type === UserActionType.LOGGED_IN) {
+  if (action.type === UserActionType.SIGNED_IN) {
     if (action.error) {
       return { 
         loggedIn: false, 
@@ -41,7 +41,7 @@ function loggedIn(state, action) {
 }
 
 function loggedOut(state, action) {
-  if (action.type === UserActionType.LOGGED_OUT) {
+  if (action.type === UserActionType.SIGNED_OUT) {
     return {
       loggedIn: false,
       name: null,
@@ -52,7 +52,7 @@ function loggedOut(state, action) {
 }
 
 function updateInfo(state, action) {
-  if (action.type === UserActionType.UPDATE_INFO) {console.log('updates info', action);
+  if (action.type === UserActionType.UPDATE_INFO) {
     return {
       loggedIn: true,
       ...action.payload

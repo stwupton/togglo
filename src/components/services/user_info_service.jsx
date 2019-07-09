@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateInfo, logout } from '../../actions/user';
+import { updateInfo, signOut } from '../../actions/user';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -13,7 +13,7 @@ class UserInfoService extends React.Component {
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (!user) {
-        this.props.logout();
+        this.props.signOut();
       } else {
         this.props.updateInfo(user);
       }
@@ -31,4 +31,4 @@ class UserInfoService extends React.Component {
   }
 }
 
-export default connect(() => ({}), { updateInfo, logout })(UserInfoService);
+export default connect(() => ({}), { updateInfo, signOut })(UserInfoService);
