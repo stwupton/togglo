@@ -30,6 +30,7 @@ function loggedIn(state, action) {
         name: null, 
         email: null, 
         photoUrl: null,
+        uid: null
       };
     }
 
@@ -47,6 +48,7 @@ function loggedOut(state, action) {
       name: null,
       email: null,
       photoUrl: null,
+      uid: null,
     };
   }
 }

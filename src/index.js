@@ -1,18 +1,18 @@
 import 'babel-polyfill';
 import { initFirebase } from './init_firebase';
 import App from './components/app';
-import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { initStore } from './store';
+import storeManager from './store_manager';
+import { Providers } from './components/util/providers';
 
 (async () => {
   await initFirebase();
-  const store = await initStore();
+  await storeManager.init();
 
   ReactDOM.render((
-    <Provider store={store}>
+    <Providers store={storeManager.store}>
       <App />
-    </Provider>
+    </Providers>
   ), document.querySelector('#root'));
 })();

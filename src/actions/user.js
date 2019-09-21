@@ -21,6 +21,7 @@ async function signInWithService(service) {
     name: result.user.displayName,
     email: result.user.email,
     photoUrl: result.user.photoURL,
+    uid: result.user.uid,
   };
 }
 
@@ -50,6 +51,7 @@ export function updateInfo(firebaseUser) {
       name: firebaseUser.displayName,
       email: firebaseUser.email,
       photoUrl: firebaseUser.photoURL,
+      uid: firebaseUser.uid
     }
   };
 }

@@ -1,10 +1,13 @@
 import LoginScreen from './login_screen';
 import Dashboard from './dashboard';
-import CSSBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import React from 'react';
 import { connect } from 'react-redux';
 import SnackbarManager from './snackbar_manager';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CSSBaseline from '@material-ui/core/CssBaseline';
+import { Route } from 'react-router-dom';
+import TopBar from './top_bar';
 
 class App extends React.Component {
   get loginOrDashboard() {
