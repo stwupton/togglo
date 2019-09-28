@@ -3,6 +3,7 @@ import 'firebase/firestore';
 
 export const ToggleActionType = {
   CREATED: 'created',
+  REFRESH: 'refresh',
 };
 
 export async function createToggle(title, options, owner) {
@@ -14,13 +15,12 @@ export async function createToggle(title, options, owner) {
 
   const toggle = { title, owner, subscribers: [], options };
 
-  let ref;
+  let reference;
   try {
-    ref = await firebase.firestore()
+    reference = await firebase.firestore()
       .collection('toggles')
       .add(toggle);
   } catch (error) {
-    console.log(error);
     return {
       type: ToggleActionType.CREATED,
       error: true,
@@ -30,6 +30,32 @@ export async function createToggle(title, options, owner) {
 
   return {
     type: ToggleActionType.CREATED,
-    payload: toggle
+    payload: { id: reference.id, ...toggle }
+  };
+}
+
+export async function refreshToggles(owner) {
+  let snapshot;
+  try {
+    snapshot = await firebase.firestore()
+      .collection('toggles')
+      .where('owner', '==', owner)
+      .get();
+  } catch (error) {
+    return {
+      type: ToggleActionType.REFRESH,
+      error: true,
+      payload: error
+    };
+  }
+
+  const toggles = snapshot.docs.map((document) => ({
+    id: document.id,
+    ...document.data()
+  }));
+
+  return {
+    type: ToggleActionType.REFRESH,
+    payload: toggles
   };
 }

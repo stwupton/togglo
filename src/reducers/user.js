@@ -1,4 +1,5 @@
 import { UserActionType } from '../actions/user';
+import { toggles } from './toggles'
 
 export function user(state, action) {
   return {
@@ -6,7 +7,8 @@ export function user(state, action) {
     ...loggedIn(state, action),
     ...loggedOut(state, action),
     ...updateInfo(state, action),
-    loggingIn: loggingIn(state.loggingIn, action)
+    loggingIn: loggingIn(state.loggingIn, action),
+    toggles: toggles(state.toggles, action),
   };
 }
 
@@ -30,7 +32,8 @@ function loggedIn(state, action) {
         name: null, 
         email: null, 
         photoUrl: null,
-        uid: null
+        uid: null,
+        toggles: { owned: [], subscribed: [] },
       };
     }
 
@@ -49,6 +52,7 @@ function loggedOut(state, action) {
       email: null,
       photoUrl: null,
       uid: null,
+      toggles: { owned: [], subscribed: [] },
     };
   }
 }

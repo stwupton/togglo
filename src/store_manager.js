@@ -28,7 +28,8 @@ class StoreManager {
       name: user && user.name,
       email: user && user.email,
       photoUrl: user && user.photoUrl,
-      toggles: user && user.toggles || { owned: null, subscribed: null },
+      uid: user && user.uid,
+      toggles: user && user.toggles || { owned: [], subscribed: [] },
     };
   }
 

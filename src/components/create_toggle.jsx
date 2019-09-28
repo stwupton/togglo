@@ -39,6 +39,7 @@ class CreateToggle extends React.Component {
     if (this.canCreateToggle) {
       this.props.createToggle(this.state.title, this.state.options, this.props.user.uid);
       this.props.onClose();
+      this.resetState();
     }
   }
 
@@ -61,6 +62,13 @@ class CreateToggle extends React.Component {
 
   onTitleInput(event) {
     this.setState({ title: event.target.value });
+  }
+
+  resetState() {
+    this.setState(() => ({
+      title: null,
+      options: [],
+    }));
   }
 
   render() {
