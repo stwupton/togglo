@@ -11,7 +11,7 @@ class LoginScreen extends React.Component {
     return (
       <div style={{ overflow: 'hidden', padding: 20 }}>
         <Typography style={{ margin: 50 }} align="center" variant="h1">Togglo</Typography>
-        <Grid container alignItems="center" direction="column" spacing={16}>
+        <Grid container alignItems="center" direction="column" spacing={2}>
           <Grid item>
             <Button 
               style={{ backgroundColor: '#4285F4', color: 'white' }} 

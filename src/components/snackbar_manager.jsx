@@ -4,6 +4,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import WarningIcon from '@material-ui/icons/Warning';
 import InfoIcon from '@material-ui/icons/Info';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Slide from '@material-ui/core/Slide';
 import React from 'react';
 import { connect } from 'react-redux';
 import { closeSnackbar, clearSnackbar } from '../actions/snackbar';
@@ -49,6 +50,7 @@ class SnackbarManager extends React.Component {
             autoHideDuration={snackbar.autoHideDuration}
             onClose={this.onClose.bind(this)}
             onExited={this.onExited.bind(this)}
+            TransitionComponent={Slide}
             message={
               <span style={{ display: 'flex', alignItems: 'center' }}>
                 {icon}

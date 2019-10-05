@@ -73,44 +73,44 @@ class CreateToggle extends React.Component {
 
   render() {
     return (
-      <Dialog 
-        open={this.props.open} 
-        onClose={this.onClose.bind(this)} 
-        TransitionComponent={Slide} 
+      <Dialog
+        open={this.props.open}
+        onClose={this.onClose.bind(this)}
+        TransitionComponent={Slide}
         TransitionProps={{ direction: 'up' }}
       >
         <DialogTitle>Create Toggle</DialogTitle>
         <DialogContent>
-          <TextField 
-            required 
-            fullWidth 
-            label="Title" 
-            value={this.state.title || ''} 
+          <TextField
+            required
+            fullWidth
+            label="Title"
+            value={this.state.title || ''}
             onChange={this.onTitleInput.bind(this)}
             onKeyDown={this.onKeyDown.bind(this)}
           />
           {[1, 2, 3, 4].map((value, index) => {
             const title = `Option ${value}`;
-            return <TextField 
-            fullWidth
-            key={title}
-            label={title}
-            value={this.state.options[index] || ''} 
-            onChange={this.onOptionInputFactory(index).bind(this)}
-            onKeyDown={this.onKeyDown.bind(this)}
-            style={{ marginTop: this.props.theme.spacing.unit }}
+            return <TextField
+              fullWidth
+              key={title}
+              label={title}
+              value={this.state.options[index] || ''}
+              onChange={this.onOptionInputFactory(index).bind(this)}
+              onKeyDown={this.onKeyDown.bind(this)}
+              style={{ marginTop: this.props.theme.spacing() }}
             />
           })}
-          <Typography 
-            variant="caption" 
-            style={{ marginTop: this.props.theme.spacing.unit * 4 }}
+          <Typography
+            variant="caption"
+            style={{ display: 'block', marginTop: this.props.theme.spacing(4) }}
           >* At least two options are required to create a toggle.</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.onClose.bind(this)} color="secondary">Cancel</Button>
-          <Button 
-            onClick={this.onCreateClicked.bind(this)} 
-            color="secondary" 
+          <Button
+            onClick={this.onCreateClicked.bind(this)}
+            color="secondary"
             disabled={!this.canCreateToggle}
           >Create</Button>
         </DialogActions>
@@ -121,5 +121,5 @@ class CreateToggle extends React.Component {
 
 export default compose(
   connect(state => ({ user: state.user }), { createToggle }),
-  withTheme(),
+  withTheme,
 )(CreateToggle);

@@ -52,7 +52,7 @@ class TopBar extends React.Component {
               alignItems="center" 
               direction="row" 
               wrap="nowrap"
-              spacing={8}
+              spacing={1}
             >
               <Grid item>
                 <IconButton color="secondary" onClick={this.props.switchTheme}>

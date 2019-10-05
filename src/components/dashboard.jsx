@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import UserInfoService from './services/user_info_service'
 import TopBar from './top_bar';
-import { Fab, Typography, Grid } from '@material-ui/core';
+import { Fab } from '@material-ui/core';
+import Container from '@material-ui/core/Container'
 import { withTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import CreateToggle from './create_toggle';
-import ToggleListItem from './toggle_list_item';
+import ToggleList from './toggle_list';
 import { refreshToggles } from '../actions/toggle';
 
 class Dashboard extends React.Component {
@@ -35,38 +36,21 @@ class Dashboard extends React.Component {
       <React.Fragment>
         <UserInfoService />
         <TopBar />
-        <Grid container alignItems="center" direction="column" wrap="nowrap" style={{ marginTop: 120 }}>
-          <Grid item container spacing={8} xs={8} alignItems="flex-start" direction="column" wrap="nowrap">
-            <Grid item>
-              <Typography variant="h6">Owned Toggles</Typography>
-            </Grid>
-            <Grid 
-              item 
-              container 
-              xs={12} 
-              spacing={8} 
-              alignItems="center" 
-              direction="column" 
-              wrap="nowrap"
-            >
-              {this.props.user.toggles.owned.map((toggle) => {
-                return (
-                  <Grid item xs={12} key={toggle.id}>
-                    <ToggleListItem title={toggle.title} options={toggle.options} />
-                  </Grid>
-                )
-              })}
-            </Grid>
-          </Grid>
-        </Grid>
+        <Container maxWidth="lg" style={{ marginTop: 100 }}>
+          <ToggleList 
+            title="Owned Toggles" 
+            toggles={this.props.user.toggles.owned} 
+            optionsDisabled={false} 
+          />
+        </Container>
         <CreateToggle 
           open={this.state.createToggleDialogOpen} 
           onClose={this.closeCreateToggleDialog.bind(this)} 
         />
         <Fab onClick={this.openCreateToggleDialog.bind(this)} color="secondary" style={{
           position: 'absolute',
-          bottom: this.props.theme.spacing.unit * 2,
-          right: this.props.theme.spacing.unit * 2
+          bottom: this.props.theme.spacing(2),
+          right: this.props.theme.spacing(2)
         }}><AddIcon /></Fab>
       </React.Fragment>
     );
@@ -75,5 +59,5 @@ class Dashboard extends React.Component {
 
 export default compose(
   connect(state => ({ user: state.user, }), { refreshToggles }),
-  withTheme()
+  withTheme
 )(Dashboard);
