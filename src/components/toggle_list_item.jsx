@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import React from 'react';
-import { Card, CardContent, Typography, FormControl, Radio, FormControlLabel, RadioGroup, Grid, Divider } from '@material-ui/core';
+import { Card, CardContent, Typography, FormControl, Radio, FormControlLabel, RadioGroup, Grid, Divider, withTheme } from '@material-ui/core';
+import { compose } from "redux";
 
 class ToggleListItem extends React.Component {
   render() {
@@ -10,12 +11,13 @@ class ToggleListItem extends React.Component {
       <Card>
         <CardContent>
           <Grid container alignItems="center" justify="flex-start" direction="row">
-            <Grid item xs={2}>
+            <Grid item xs={3}>
               <Typography variant="body1">{this.props.toggle.title}</Typography>
             </Grid>
-            <Grid item xs={2} container justify="center">
-              <Divider orientation="vertical" style={{ height: 70 }} />
-            </Grid>
+            <Divider 
+              orientation="vertical" 
+              style={{ height: 80 }}
+            />
             <Grid item xs={8}>
               <FormControl component="fieldset">
                 <RadioGroup 
@@ -45,4 +47,7 @@ class ToggleListItem extends React.Component {
   }
 }
 
-export default connect(state => ({}), { /*updateToggleStatus*/ })(ToggleListItem);
+export default compose(
+  withTheme,
+  connect(state => ({}), { /*updateToggleStatus*/ }),
+)(ToggleListItem);
