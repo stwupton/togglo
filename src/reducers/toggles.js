@@ -1,6 +1,12 @@
 import { ToggleActionType } from "../actions/toggle";
 
 export function toggles(state, action) {
+  if (action.error) {
+    return state;
+  }
+  
+  state = refreshToggles(state, action);
+
   return {
     owned: owned(state.owned, action),
     subscribed: subscribed(state.subscribed, action),
@@ -8,10 +14,15 @@ export function toggles(state, action) {
 }
 
 function owned(state, action) {
-  const newState = [...state];
-  createToggle(newState, action);
-  refreshToggles(newState, action);
-  return newState;
+  state = state.map(toggle => ({
+    ...toggle,
+    ...updateOptions(toggle, action),
+  }));
+
+  return [
+    ...state,   
+    ...createToggle(state, action),
+  ];
 }
 
 function subscribed(state, action) {
@@ -19,14 +30,28 @@ function subscribed(state, action) {
   return newState;
 }
 
-function createToggle(newState, action) {
+function createToggle(state, action) {
   if (action.type == ToggleActionType.CREATED) {
-    newState.push(action.payload);
+    return [action.payload];
   }
+  return [];
 }
 
-function refreshToggles(newState, action) {
+function refreshToggles(state, action) {
   if (action.type == ToggleActionType.REFRESH) {
-    newState.splice(0, newState.length, ...action.payload);
+    return {
+      owned: action.payload.owned,
+      subscribed: action.payload.subscribed,
+    };
+  }
+  return state;
+}
+
+function updateOptions(state, action) {
+  if (
+    action.type == ToggleActionType.UPDATE_OPTIONS && 
+    state.id == action.payload.id
+  ) {
+    return { options: action.payload.options };
   }
 }

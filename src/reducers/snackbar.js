@@ -14,10 +14,18 @@ function baseSnackbar() {
 
 export function snackbars(state, action) {
   let newState = [...state];
+  open(newState, action);
   close(newState, action);
   clear(newState, action);
   loginErrors(newState, action);
   return newState;
+}
+
+function open(state, action) {
+  if (action.type === SnackbarActionType.OPEN) {
+    close(state, { type: SnackbarActionType.CLOSE });
+    state.push({ ...baseSnackbar(), ...action.payload });
+  }
 }
 
 function clear(state, action) {

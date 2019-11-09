@@ -4,6 +4,7 @@ import 'firebase/firestore';
 export const ToggleActionType = {
   CREATED: 'created',
   REFRESH: 'refresh',
+  UPDATE_OPTIONS: 'update_options'
 };
 
 export async function createToggle(title, options, owner) {
@@ -34,13 +35,27 @@ export async function createToggle(title, options, owner) {
   };
 }
 
+async function fetchOwnedToggles(owner) {
+  return firebase.firestore()
+    .collection('toggles')
+    .where('owner', '==', owner)
+    .get();
+}
+
+async function fetchSubscribedToggles(owner) {
+  return firebase.firestore()
+    .collection('toggles')
+    .where('subscribers', 'array-contains', owner)
+    .get();
+}
+
 export async function refreshToggles(owner) {
-  let snapshot;
+  let snapshots = [];
   try {
-    snapshot = await firebase.firestore()
-      .collection('toggles')
-      .where('owner', '==', owner)
-      .get();
+    snapshots = await Promise.all([
+      fetchOwnedToggles(owner), 
+      fetchSubscribedToggles(owner)
+    ]);
   } catch (error) {
     return {
       type: ToggleActionType.REFRESH,
@@ -49,13 +64,41 @@ export async function refreshToggles(owner) {
     };
   }
 
-  const toggles = snapshot.docs.map((document) => ({
+  const owned = snapshots[0].docs.map((document) => ({
+    id: document.id,
+    ...document.data()
+  }));
+
+  const subscribed = snapshots[1].docs.map((document) => ({
     id: document.id,
     ...document.data()
   }));
 
   return {
     type: ToggleActionType.REFRESH,
-    payload: toggles
+    payload: { owned, subscribed }
+  };
+}
+
+export async function updateToggleOptions(newOptions, toggleId) {
+  try {
+    await firebase.firestore()
+      .collection('toggles')
+      .doc(toggleId)
+      .update({ options: newOptions });
+  } catch (error) {
+    return {
+      type: ToggleActionType.UPDATE_OPTIONS,
+      error: true,
+      payload: error
+    };
+  }
+
+  return {
+    type: ToggleActionType.UPDATE_OPTIONS,
+    payload: {
+      id: toggleId,
+      options: newOptions
+    }
   };
 }

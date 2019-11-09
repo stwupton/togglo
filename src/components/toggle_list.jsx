@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ToggleListItem from './toggle_list_item';
 import { Typography, Grid } from '@material-ui/core';
 
@@ -28,14 +29,13 @@ class ToggleList extends React.Component {
           <Grid 
             item 
             container 
-            spacing={8} 
-            alignItems="stretch" 
-            direction="column" 
-            wrap="nowrap"
+            spacing={1} 
+            direction="row"
+            wrap="wrap"
           >
             {this.props.toggles.map((toggle) => {
               return (
-                <Grid item key={toggle.id}>
+                <Grid item xs={12} key={toggle.id}>
                   <ToggleListItem 
                     toggle={toggle}
                     optionsDisabled={this.props.optionsDisabled} 
@@ -50,4 +50,4 @@ class ToggleList extends React.Component {
   }
 }
 
-export default ToggleList;
+export default connect(state => ({}), {})(ToggleList);

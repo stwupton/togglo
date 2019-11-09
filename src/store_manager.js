@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import 'firebase/auth';
 import { snackbars } from './reducers/snackbar';
 import { get, set, Store } from 'idb-keyval';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 class StoreManager {
   constructor() {
@@ -17,6 +18,11 @@ class StoreManager {
   async init() {
     const defaultState = await this.getDefaultState();
     this.store = createStore(this.reduce, defaultState, this.middleware);
+
+    // Debug
+    // const devtools = composeWithDevTools({ trace: true, traceLimit: 25 });
+    // this.store = createStore(this.reduce, defaultState, devtools(this.middleware));
+
     this.store.subscribe(() => this.onStoreUpdate(this.store.getState()));
   }
 
