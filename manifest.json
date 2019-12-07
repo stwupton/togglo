@@ -1,0 +1,8 @@
+{
+  "short_name": "Togglo",
+  "name": "Togglo",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#bdbdbd",
+  "background_color": "#bdbdbd"
+}
