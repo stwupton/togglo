@@ -36,8 +36,9 @@ class CreateToggle extends React.Component {
   }
 
   onCreateClicked() {
+    const options = this.state.options.filter(option => option != null);
     if (this.canCreateToggle) {
-      this.props.createToggle(this.state.title, this.state.options, this.props.user.uid);
+      this.props.createToggle(this.state.title, options, this.props.user.uid);
       this.props.onClose();
       this.resetState();
     }

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import { Card, CardContent, Typography, FormControl, Grid, Select, MenuItem, CardActions, Button, IconButton } from '@material-ui/core';
+import { Card, CardContent, Typography, FormControl, Grid, Select, MenuItem, IconButton } from '@material-ui/core';
 import { updateToggleOptions } from '../actions/toggle';
 import ShareIcon from '@material-ui/icons/Share';
 import clipboardCopy from 'clipboard-copy';
@@ -21,7 +21,7 @@ class ToggleListItem extends React.Component {
     clipboardCopy(`${window.location.origin}/${this.props.toggle.id}`).then(() => {
       this.props.openSnackbar(
         SnackbarMessageType.REGULAR, 
-        'Link was copied to your cliploard!'
+        'Link was copied to your clipboard!'
       );
     });
   }

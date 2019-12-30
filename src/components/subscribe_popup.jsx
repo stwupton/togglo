@@ -4,6 +4,7 @@ import { Dialog, DialogActions, DialogTitle, Slide, Button } from '@material-ui/
 import firebase from 'firebase/app';
 import 'firebase/functions';
 import { openSnackbar } from '../actions/snackbar';
+import { refreshToggles } from '../actions/toggle';
 import { SnackbarMessageType } from '../names';
 
 class SubscribePopup extends React.Component {
@@ -28,6 +29,7 @@ class SubscribePopup extends React.Component {
     const subscribe = firebase.functions().httpsCallable('subscribeToToggle');
     subscribe({ toggleId }).then(() => {
       this.props.openSnackbar(SnackbarMessageType.REGULAR, 'Subscribed to toggle!');
+      this.props.refreshToggles(this.props.user.uid);
       this.setState({ open: false, subscribing: false });
     }).catch(() => {
       this.props.openSnackbar(SnackbarMessageType.ERROR, 'Could not subscribe to toggle.');
@@ -62,4 +64,6 @@ class SubscribePopup extends React.Component {
   }
 }
 
-export default connect(state => ({}), { openSnackbar })(SubscribePopup);
+export default connect(state => ({ 
+  user: state.user 
+}), { openSnackbar, refreshToggles })(SubscribePopup);
