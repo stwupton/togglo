@@ -6,6 +6,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { connect } from 'react-redux';
+import { version } from '../../package.json';
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -73,6 +74,9 @@ class TopBar extends React.Component {
           <MenuItem onClick={this.props.signOut}>
             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
             Sign out
+          </MenuItem>
+          <MenuItem disabled={true}>
+            <Typography variant="subtitle1">v{version}</Typography>
           </MenuItem>
         </Menu>
       </AppBar>

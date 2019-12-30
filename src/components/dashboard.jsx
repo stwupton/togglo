@@ -66,7 +66,7 @@ class Dashboard extends React.Component {
           onClose={this.closeCreateToggleDialog.bind(this)} 
         />
         <Fab onClick={this.openCreateToggleDialog.bind(this)} color="secondary" style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: this.props.theme.spacing(2),
           right: this.props.theme.spacing(2)
         }}><AddIcon /></Fab>
