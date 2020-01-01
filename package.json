@@ -1,6 +1,6 @@
 {
   "name": "togglo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Experimental PWA that updates friends and family with a tap of a button.",
   "main": "index.js",
   "scripts": {
