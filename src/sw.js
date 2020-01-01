@@ -46,11 +46,11 @@ async function handleRequest(request) {
 
     if (isUserImage) {
       response = await self.fetch(request);
-      await cache.put(request, response);
+      cache.put(request.clone(), response.clone());
     }
   }
 
-  return response;
+  return response || self.fetch(request);
 }
 
 self.addEventListener('install', event => {
@@ -58,6 +58,7 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
+  self.clients.claim();
   event.waitUntil(clearOldCache());
 });
 
