@@ -39,14 +39,14 @@ async function fetchOwnedToggles(owner) {
   return firebase.firestore()
     .collection('toggles')
     .where('owner', '==', owner)
-    .get();
+    .get({ source: 'server' });
 }
 
 async function fetchSubscribedToggles(owner) {
   return firebase.firestore()
     .collection('toggles')
     .where('subscribers', 'array-contains', owner)
-    .get();
+    .get({ source: 'server' });
 }
 
 export async function refreshToggles(owner) {
