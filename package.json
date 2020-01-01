@@ -4,6 +4,7 @@
   "description": "Experimental PWA that updates friends and family with a tap of a button.",
   "main": "index.js",
   "scripts": {
+    "build-prod": "npx webpack --mode=production --config=webpack.sw.js && npx webpack --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,7 +36,8 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "typeface-roboto": "0.0.75"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -45,6 +47,7 @@
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.1",
     "fibers": "^3.1.1",
+    "file-loader": "^5.0.2",
     "sass": "^1.17.3",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
