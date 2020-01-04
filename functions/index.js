@@ -8,6 +8,10 @@ exports.subscribeToToggle = functions.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError('unauthenticated', 'Cannot perform operation with unauthenticated user.');
   }
 
+  if (!data.toggleId || !data.messagingToken) {
+    throw new functions.https.HttpsError('aborted', 'Data properties are not valid.');
+  }
+
   const doc = admin.firestore().collection('toggles').doc(data.toggleId);
   
   const snapshot = await doc.get();
@@ -19,10 +23,19 @@ exports.subscribeToToggle = functions.https.onCall(async (data, context) => {
     await doc.update({ 
       subscribers: admin.firestore.FieldValue.arrayUnion(context.auth.uid) 
     });
+    await admin.messaging().subscribeToTopic(data.messagingToken, data.toggleId);
   } catch (error) {
-    console.log(error);
     throw new functions.https.HttpsError('internal', error);
   }
 });
 
-// exports.onToggleUpdate = 
+exports.onToggleUpdate = functions.firestore
+  .document('toggles/{toggleId}')
+  .onUpdate(async (change, context) => {
+    const toggle = change.after.data();
+    const activeOption = toggle.options.filter(option => option.active)[0];
+
+    await admin.messaging().sendToTopic(context.params.toggleId, { 
+      notification: { title: "Toggle Updated", body: activeOption.name } 
+    });
+  });

@@ -12,7 +12,15 @@ export const UserActionType = {
   SIGNED_IN: 'signed_in',
   SIGNED_OUT: 'signed_out',
   UPDATE_INFO: 'update_info',
+  SET_MESSAGING_TOKEN: 'set_messaging_token',
 };
+
+export function setMessagingToken(token) {
+  return {
+    type: UserActionType.SET_MESSAGING_TOKEN,
+    payload: token,
+  };
+}
 
 async function signInWithService(service) { 
   const provider = authProviders[service];

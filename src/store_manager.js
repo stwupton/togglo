@@ -36,6 +36,7 @@ class StoreManager {
       photoUrl: user && user.photoUrl,
       uid: user && user.uid,
       toggles: user && user.toggles || { owned: [], subscribed: [] },
+      messagingToken: user && user.messagingToken
     };
   }
 

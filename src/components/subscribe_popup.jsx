@@ -26,8 +26,9 @@ class SubscribePopup extends React.Component {
     this.setState({ subscribing: true });
 
     const toggleId = this.props.match.params.toggleId;
+    const messagingToken = this.props.user.messagingToken;
     const subscribe = firebase.functions().httpsCallable('subscribeToToggle');
-    subscribe({ toggleId }).then(() => {
+    subscribe({ toggleId, messagingToken }).then(() => {
       this.props.openSnackbar(SnackbarMessageType.REGULAR, 'Subscribed to toggle!');
       this.props.refreshToggles(this.props.user.uid);
       this.setState({ open: false, subscribing: false });

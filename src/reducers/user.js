@@ -9,6 +9,7 @@ export function user(state, action) {
     ...updateInfo(state, action),
     loggingIn: loggingIn(state.loggingIn, action),
     toggles: toggles(state.toggles, action),
+    messagingToken: messagingToken(state.messagingToken, action),
   };
 }
 
@@ -34,6 +35,7 @@ function loggedIn(state, action) {
         photoUrl: null,
         uid: null,
         toggles: { owned: [], subscribed: [] },
+        messagingToken: null,
       };
     }
 
@@ -53,8 +55,16 @@ function loggedOut(state, action) {
       photoUrl: null,
       uid: null,
       toggles: { owned: [], subscribed: [] },
+      messagingToken: null,
     };
   }
+}
+
+function messagingToken(state, action) {
+  if (action.type === UserActionType.SET_MESSAGING_TOKEN) {
+    return action.payload;
+  }
+  return state;
 }
 
 function updateInfo(state, action) {

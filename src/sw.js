@@ -11,12 +11,12 @@ const resourcesToCache = [
 
 async function initCache() {
   const cache = await caches.open(version);
-  return cache.addAll(resourcesToCache);
+  await cache.addAll(resourcesToCache);
 }
 
 async function clearOldCache() {
   const cacheIds = await caches.keys();
-  return Promise.all(cacheIds.map(cacheId => {
+  await Promise.all(cacheIds.map(cacheId => {
     if (cacheId != version) {
       return caches.delete(cacheId);
     }
@@ -65,4 +65,3 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request));
 });
-
