@@ -24,6 +24,7 @@ exports.subscribeToToggle = functions.https.onCall(async (data, context) => {
       subscribers: admin.firestore.FieldValue.arrayUnion(context.auth.uid) 
     });
     await admin.messaging().subscribeToTopic(data.messagingToken, data.toggleId);
+    console.log('Subscribed to: ', data.toggleId, 'with token: ', data.messagingToken);
   } catch (error) {
     throw new functions.https.HttpsError('internal', error);
   }
@@ -34,8 +35,9 @@ exports.onToggleUpdate = functions.firestore
   .onUpdate(async (change, context) => {
     const toggle = change.after.data();
     const activeOption = toggle.options.filter(option => option.active)[0];
-
-    await admin.messaging().sendToTopic(context.params.toggleId, { 
-      notification: { title: "Toggle Updated", body: activeOption.name } 
-    });
+    const title = 'Toggle Updated';
+    const body = activeOption.name;
+    const notification = { title, body };
+    await admin.messaging().sendToTopic(context.params.toggleId, { notification });
+    console.log('Sent notification to:', context.params.toggleId, ' with: ', { notification });
   });
