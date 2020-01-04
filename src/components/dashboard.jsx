@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import UserInfoService from './services/user_info_service'
+import UserInfoService from './services/user_info_service';
+import MessageSevice from './services/message_service';
 import TopBar from './top_bar';
 import { Fab, Grid } from '@material-ui/core';
 import Container from '@material-ui/core/Container'
@@ -37,6 +38,7 @@ class Dashboard extends React.Component {
     return (
       <React.Fragment>
         <UserInfoService />
+        <MessageSevice />
         <TopBar />
         <Container maxWidth="lg" style={{ marginTop: 100 }}>
           <Grid container direction="column" spacing={4}>
