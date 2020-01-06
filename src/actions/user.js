@@ -1,6 +1,7 @@
 import { AuthService } from '../names';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/functions';
 
 const authProviders = {
   [AuthService.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
@@ -13,9 +14,18 @@ export const UserActionType = {
   SIGNED_OUT: 'signed_out',
   UPDATE_INFO: 'update_info',
   SET_MESSAGING_TOKEN: 'set_messaging_token',
+  UNSET_MESSAGING_TOKEN: 'unset_messaging_token',
 };
 
-export function setMessagingToken(token) {
+export async function setMessagingToken(token) {
+  try {
+    const setUserMessagingToken = 
+      firebase.functions().httpsCallable('setUserMessagingToken');
+    await setUserMessagingToken({ token });
+  } catch (e) {
+    return {};
+  }
+
   return {
     type: UserActionType.SET_MESSAGING_TOKEN,
     payload: token,
@@ -61,5 +71,20 @@ export function updateInfo(firebaseUser) {
       photoUrl: firebaseUser.photoURL,
       uid: firebaseUser.uid
     }
+  };
+}
+
+export async function unsetMessagingToken(token) {
+  try {
+    const unsetUserMessagingToken = 
+      firebase.functions().httpsCallable('unsetUserMessagingToken');
+    await unsetUserMessagingToken({ token });
+  } catch (e) {
+    return {};
+  }
+
+  return {
+    type: UserActionType.UNSET_MESSAGING_TOKEN,
+    payload: token,
   };
 }

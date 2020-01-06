@@ -1,5 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/functions';
+import { openSnackbar } from './snackbar';
+import { SnackbarMessageType } from '../names';
 
 export const ToggleActionType = {
   CREATED: 'created',
@@ -78,6 +81,22 @@ export async function refreshToggles(owner) {
     type: ToggleActionType.REFRESH,
     payload: { owned, subscribed }
   };
+}
+
+export async function subscribeToToggle(toggleId, uid) {
+  try {
+    await firebase.functions().httpsCallable('subscribeToToggle')({ toggleId });
+  } catch (e) {
+    return openSnackbar(
+      SnackbarMessageType.ERROR, 
+      'Could not subscribe to toggle.'
+    );
+  }
+
+  return dispatch => {
+    dispatch(openSnackbar(SnackbarMessageType.REGULAR, 'Subscribed to toggle!'));
+    dispatch(refreshToggles(uid));
+  }
 }
 
 export async function updateToggleOptions(newOptions, toggleId) {

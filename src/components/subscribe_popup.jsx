@@ -1,11 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dialog, DialogActions, DialogTitle, Slide, Button } from '@material-ui/core';
-import firebase from 'firebase/app';
-import 'firebase/functions';
-import { openSnackbar } from '../actions/snackbar';
-import { refreshToggles } from '../actions/toggle';
-import { SnackbarMessageType } from '../names';
+import { subscribeToToggle } from '../actions/toggle';
 
 class SubscribePopup extends React.Component {
   constructor(props) {
@@ -17,25 +13,15 @@ class SubscribePopup extends React.Component {
   }
 
   onClose() {
-    if (!this.state.subscribing) {
-      this.setState({ open: false });
-    }
+    this.setState({ subscribing: true, open: false });
   }
 
   onSubscribeClicked() {
-    this.setState({ subscribing: true });
+    this.setState({ subscribing: true, open: false });
 
     const toggleId = this.props.match.params.toggleId;
-    const messagingToken = this.props.user.messagingToken;
-    const subscribe = firebase.functions().httpsCallable('subscribeToToggle');
-    subscribe({ toggleId, messagingToken }).then(() => {
-      this.props.openSnackbar(SnackbarMessageType.REGULAR, 'Subscribed to toggle!');
-      this.props.refreshToggles(this.props.user.uid);
-      this.setState({ open: false, subscribing: false });
-    }).catch(() => {
-      this.props.openSnackbar(SnackbarMessageType.ERROR, 'Could not subscribe to toggle.');
-      this.setState({ subscribing: false });
-    });
+    const uid = this.props.user.uid;
+    this.props.subscribeToToggle(toggleId, uid);
   }
 
   render() {
@@ -67,4 +53,4 @@ class SubscribePopup extends React.Component {
 
 export default connect(state => ({ 
   user: state.user 
-}), { openSnackbar, refreshToggles })(SubscribePopup);
+}), { subscribeToToggle })(SubscribePopup);

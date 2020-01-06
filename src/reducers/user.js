@@ -64,6 +64,11 @@ function messagingToken(state, action) {
   if (action.type === UserActionType.SET_MESSAGING_TOKEN) {
     return action.payload;
   }
+
+  if (action.type === UserActionType.UNSET_MESSAGING_TOKEN) {
+    if (state == action.payload) return null;
+  }
+
   return state;
 }
 

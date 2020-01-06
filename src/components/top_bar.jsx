@@ -1,5 +1,5 @@
 import { switchTheme } from '../actions/settings';
-import { signOut } from '../actions/user';
+import { signOut, unsetMessagingToken } from '../actions/user';
 import { AppBar, Avatar, Toolbar, IconButton, Grid, Menu, MenuItem, ListItemIcon } from '@material-ui/core';
 import BrightnessMediumIcon from '@material-ui/icons/BrightnessMedium';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -26,6 +26,11 @@ class TopBar extends React.Component {
         anchor: e.currentTarget,
       }
     });
+  }
+
+  onSignOutClicked() {
+    this.props.unsetMessagingToken(this.props.user.messagingToken);
+    this.props.signOut();
   }
 
   onUserMenuClosed() {
@@ -71,7 +76,7 @@ class TopBar extends React.Component {
           anchorEl={this.state.userMenu.anchor} 
           onClose={this.onUserMenuClosed.bind(this)}
         >
-          <MenuItem onClick={this.props.signOut}>
+          <MenuItem onClick={this.onSignOutClicked.bind(this)}>
             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
             Sign out
           </MenuItem>
@@ -86,4 +91,4 @@ class TopBar extends React.Component {
 
 export default connect((state) => ({
   user: state.user
-}), { switchTheme, signOut })(TopBar);
+}), { switchTheme, signOut, unsetMessagingToken })(TopBar);
